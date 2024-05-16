@@ -7,7 +7,6 @@ app.use(express.urlencoded({ extended: true }));
 
 const userRoutes = require('./routes/user');
 
-app.use('/', homeRoutes);
 app.use('/users', userRoutes);
 
 // Start the server

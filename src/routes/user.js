@@ -6,7 +6,7 @@ const UserController = require('../controllers/UserController');
 //router.get('/', UserController.getAllUsers);
 
 // POST /users - Create a new user
-router.post('/', UserController.createUser);
+router.post('/create', UserController.createUser);
 
 // GET /users/:id - Get a specific user by ID
 //router.get('/:id', UserController.getUserById);
