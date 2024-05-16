@@ -1,27 +1,35 @@
 pragma solidity ^0.8.0;
 
+import "./TradeRecord.sol";
+
 contract Marketplace {
     struct Product {
         string metaUuid;
         string name;
         uint32 price;
-        uint8 quantity;
+        uint32 quantity;
         address seller;
         string sellerUuid;
     }
 
+    TradeRecord public tradeRecord;
+
     mapping(uint256 => Product) public products;
     uint256 public productIndex;
 
-    event ProductAdded(string metaUuid, uint256 productId, string name, uint32 price, uint8 quantity, address seller, string sellerUuid);
-    event ProductPurchased(uint256 productId, address buyer, string buyerUuid, uint8 quantity);
+    constructor(address _tradeRecordContractAddress) {
+        tradeRecord = TradeRecord(_tradeRecordContractAddress);
+    }
+
+    event ProductAdded(string metaUuid, uint256 productId, string name, uint32 price, uint32 quantity, address seller, string sellerUuid);
+    event ProductPurchased(uint256 productId, address buyer, string buyerUuid, uint32 quantity);
     event ProductRemoved(uint256 productId);
 
     function addProduct(
         string memory _metaUuid,
         string memory _name,
         uint32 _price,
-        uint8 _quantity,
+        uint32 _quantity,
         string memory _sellerUuid
     ) external {
         require(_price > 0, "Price must be greater than zero");
@@ -35,7 +43,7 @@ contract Marketplace {
         productIndex++;
     }
 
-    function purchaseProduct(uint256 _productId, uint8 _quantity, string memory _buyerUuid) external payable {
+    function purchaseProduct(uint256 _productId, uint32 _quantity, string memory _buyerUuid) external payable {
         require(_productId < productIndex, "Invalid product ID");
 
         Product memory product = products[_productId];
@@ -47,6 +55,16 @@ contract Marketplace {
         product.quantity -= _quantity;
 
         payable(product.seller).transfer(totalPrice);
+
+        tradeRecord.addTradeRecord(
+            block.timestamp,
+            _quantity,
+            product.price,
+            msg.sender,
+            product.seller,
+            _buyerUuid,
+            product.sellerUuid
+        );
 
         emit ProductPurchased(_productId, msg.sender, _buyerUuid, _quantity);
     }

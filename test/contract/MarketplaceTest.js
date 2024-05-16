@@ -3,13 +3,23 @@ const { ethers } = require("hardhat");
 
 describe("Marketplace contract", function (){
     let marketplaceContract;
+    let marketplaceInstance;
     let seller;
     let buyer;
 
     before(async function () {
         [seller, buyer] = await ethers.getSigners();
     
-        marketplaceContract = await ethers.deployContract("Marketplace");
+        let randomNumberGeneratorContract = await ethers.getContractFactory("RandomNumberGenerator");
+        let randomNumberGeneratorInstance = await randomNumberGeneratorContract.deploy();
+
+        // Deploy TradeRecordContract
+        let tradeRecordContract = await ethers.getContractFactory("TradeRecord");
+        let tradeRecordInstance = await tradeRecordContract.deploy(randomNumberGeneratorInstance.target);
+
+        // Deploy MarketplaceContract with TradeRecordContract's address
+        marketplaceContract = await ethers.getContractFactory("Marketplace");
+        marketplaceInstance = await marketplaceContract.deploy(tradeRecordInstance.target);
     });
 
     it("Should add a new product", async function () {
@@ -19,11 +29,11 @@ describe("Marketplace contract", function (){
         const productQuantity = 5;
         const sellerUuid = "seller-uuid";
       
-        const tx = await marketplaceContract.connect(seller).addProduct(metaUuid, productName, productPrice, productQuantity, sellerUuid);
+        const tx = await marketplaceInstance.connect(seller).addProduct(metaUuid, productName, productPrice, productQuantity, sellerUuid);
         const receipt = await tx.wait();
-        const product = await marketplaceContract.products(0);
+        const product = await marketplaceInstance.products(0);
         const log = receipt.logs[0];
-        const parsedLog = marketplaceContract.interface.parseLog(log);
+        const parsedLog = marketplaceInstance.interface.parseLog(log);
       
         expect(product.metaUuid).to.equal(metaUuid)
         expect(product.name).to.equal(productName);
