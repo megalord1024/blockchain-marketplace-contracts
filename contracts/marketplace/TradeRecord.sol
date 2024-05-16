@@ -15,6 +15,8 @@ contract TradeRecord {
     }
 
     mapping(uint256 => Transaction) public transactions;
+    mapping(address => uint256[]) private buyerToTransactionIndexes;
+    mapping(address => uint256[]) private sellerToTransactionIndexes;
     uint256 public transactionIndex;
 
     RandomNumberGenerator randomGenerator;
@@ -48,6 +50,9 @@ contract TradeRecord {
         );
         transactions[transactionIndex] = newTransactionRecord;
 
+        buyerToTransactionIndexes[_buyer].push(transactionIndex);
+        sellerToTransactionIndexes[_seller].push(transactionIndex);
+
         emit TradeRecordAdded(
             transactionIndex,
             _timestamp,
@@ -61,5 +66,13 @@ contract TradeRecord {
         );
 
         transactionIndex++;
+    }
+
+    function getTransactionIndexesByBuyer(address _buyer) external view returns (uint256[] memory) {
+        return buyerToTransactionIndexes[_buyer];
+    }
+
+    function getTransactionIndexesBySeller(address _seller) external view returns (uint256[] memory) {
+        return sellerToTransactionIndexes[_seller];
     }
 }
