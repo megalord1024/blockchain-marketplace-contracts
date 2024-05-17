@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "blockchain marketplace for items",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "npm test"
   },
