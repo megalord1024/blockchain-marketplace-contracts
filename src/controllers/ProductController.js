@@ -1,4 +1,4 @@
-const ProductService  = require("../services/UserService.js");
+const ProductService  = require("../services/ProductService.js");
 
 const ProductController = {
   listItem: async (req, res) => {
