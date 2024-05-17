@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-import config from "../config/config.js"
+import dotenv from "dotenv";
 
-const dbURL = config.dbURI;
-const mongooseOptions = config.mongooseOptions;
-
+dotenv.config();
 
 export const connectToDatabase = () => {
-    mongoose.connect(dbURL, mongooseOptions);
+    mongoose.connect(process.env.MONGODB_URI)
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
     db.once('open', () => {

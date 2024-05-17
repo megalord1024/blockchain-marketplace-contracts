@@ -34,6 +34,32 @@ const UserService = {
       };
     }
   },
+
+  loginUser: async(username, password) => {
+    try {
+      // Find the user in the database based on the provided username
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        return { success: false, message: "Invalid username or password" };
+      }
+
+      // Compare the provided password with the stored password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+
+      if (!passwordMatch) {
+        return { success: false, message: "Invalid username or password" };
+      }
+
+      // JWT Implementation...
+      
+      // Password matches, login successful
+      return { success: true, message: "Login successful" };
+    } catch (error) {
+      // Handle any errors that occur during the login process
+      return { success: false, message: "Failed to login" };
+    }
+  }
 };
 
 export default UserService;

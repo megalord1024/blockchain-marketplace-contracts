@@ -19,30 +19,21 @@ const UserController = {
     }
   },
 
-  // loginUser: async (req, res) => {
-  //   try {
-  //     const { username, password } = req.body;
+  loginUser: async (req, res) => {
+    try {
+      const { username, password } = req.body;
 
-  //     // Find the user by username
-  //     const user = await User.findOne({ username });
-  //     if (!user) {
-  //       return res.status(401).json({ error: 'Invalid username or password' });
-  //     }
+      const result = await UserService.loginUser(username, password);
 
-  //     // Compare the password
-  //     const isPasswordValid = await bcrypt.compare(password, user.password);
-  //     if (!isPasswordValid) {
-  //       return res.status(401).json({ error: 'Invalid username or password' });
-  //     }
-
-  //     // Generate a JWT
-  //     const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
-
-  //     res.json({ token });
-  //   } catch (error) {
-  //     res.status(500).json({ error: 'An error occurred while logging in' });
-  //   }
-  // },
+      if (result.success) {
+        res.status(200).json({ message: "Login successful" });
+      } else {
+        res.status(401).json({ error: result.message });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "An error occurred while logging in" });
+    }
+  }
 };
 
 export default UserController;

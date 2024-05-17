@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-mongoose.connect("mongodb://localhost:27017/blockchain-marketplace", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+dotenv.config();
 
+mongoose.connect(process.env.MONGODB_URI)
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
