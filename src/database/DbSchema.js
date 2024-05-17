@@ -1,9 +1,7 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const { MONGODB_URI } = require("../../config");
 
-dotenv.config();
-
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(MONGODB_URI)
 const { Schema } = mongoose;
 
 const userSchema = new Schema({

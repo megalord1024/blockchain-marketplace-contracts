@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
-import User from "../models/User.js";
+const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
+const User = require("../models/User.js");
 
 const saltRounds = 10;
 const UserService = {
@@ -54,7 +54,7 @@ const UserService = {
       // JWT Implementation...
       
       // Password matches, login successful
-      return { success: true, message: "Login successful" };
+      return { success: true, message: "Login successful", userUuid: user.uuid };
     } catch (error) {
       // Handle any errors that occur during the login process
       return { success: false, message: "Failed to login" };
@@ -62,4 +62,4 @@ const UserService = {
   }
 };
 
-export default UserService;
+module.exports =  UserService;

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "blockchain marketplace for items",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "contract-deploy": "npx hardhat run --network hardhat deploy/deploy.js",
+    "contract-test": "npx hardhat test"
   },
   "keywords": [
     "blockchain",
@@ -23,6 +24,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.12.1",
     "express": "^4.19.2",
+    "hardhat-waffle": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.5"
   }

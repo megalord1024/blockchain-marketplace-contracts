@@ -1,4 +1,5 @@
-import UserService from "../services/UserService.js";
+const UserService = require("../services/UserService.js");
+const { generateToken } = require("../auth/jwt.js")
 
 const UserController = {
   createUser: async (req, res) => {
@@ -26,6 +27,10 @@ const UserController = {
       const result = await UserService.loginUser(username, password);
 
       if (result.success) {
+        // Generate JWT token
+        const token = generateToken({ username: username, userUuid: result.uuid });
+        console.log(token);
+
         res.status(200).json({ message: "Login successful" });
       } else {
         res.status(401).json({ error: result.message });
@@ -33,7 +38,7 @@ const UserController = {
     } catch (error) {
       res.status(500).json({ error: "An error occurred while logging in" });
     }
-  }
+  },
 };
 
-export default UserController;
+module.exports = UserController;

@@ -1,5 +1,5 @@
-import express from "express";
-import UserController from "../controllers/UserController.js";
+const express = require("express");
+const UserController = require("../controllers/UserController.js");
 const userRouter = express.Router();
 
 // GET /users - Get all users
@@ -20,4 +20,4 @@ userRouter.post("/login", UserController.loginUser);
 // DELETE /users/:id - Delete a specific user by ID
 //router.delete('/:id', UserController.deleteUserById);
 
-export default userRouter;
+module.exports =  userRouter;

@@ -1,6 +1,7 @@
-import express from "express";
-import userRouter from "./routes/User.js";
-import { connectToDatabase } from "./database/DbConnection.js"
+const express = require("express");
+const userRouter = require("./routes/User.js");
+const productRouter = require("./routes/Product.js");
+const connectToDatabase = require("./database/DbConnection.js");
 const app = express();
 
 //database connection
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRouter);
+app.use("/products", productRouter);
 
 // Start the server
 const port = 3000;
