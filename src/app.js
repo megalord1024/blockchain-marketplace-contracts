@@ -1,13 +1,15 @@
-const express = require('express');
+import express from "express";
+import userRouter from "./routes/User.js";
+import { connectToDatabase } from "./database/DbConnection.js"
 const app = express();
 
+//database connection
+connectToDatabase();
 // Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const userRoutes = require('./routes/user');
-
-app.use('/users', userRoutes);
+app.use("/users", userRouter);
 
 // Start the server
 const port = 3000;
