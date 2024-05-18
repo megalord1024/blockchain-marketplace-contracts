@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "contract-deploy": "npx hardhat run --network hardhat deploy/deploy.js",
+    "contract-deploy": "npx hardhat run --network sepolia scripts/deploy.js",
     "contract-test": "npx hardhat test"
   },
   "keywords": [
