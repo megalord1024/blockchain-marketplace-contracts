@@ -21,4 +21,4 @@ const ProductService = {
   },
 };
 
-export default ProductService;
+module.exports = ProductService;
