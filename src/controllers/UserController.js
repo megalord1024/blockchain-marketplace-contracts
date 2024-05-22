@@ -16,7 +16,7 @@ const UserController = {
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while registering user" });
+        .json({ error: "An error occurred while registering user"});
     }
   },
 
@@ -25,10 +25,9 @@ const UserController = {
       const { username, password } = req.body;
 
       const result = await UserService.loginUser(username, password);
-
       if (result.success) {
         // Generate JWT token
-        const token = generateToken({ username: username, userUuid: result.uuid });
+        const token = generateToken({ username: username, userUuid: result.userUuid });
         console.log(token);
 
         res.status(200).json({ message: "Login successful", token: token });

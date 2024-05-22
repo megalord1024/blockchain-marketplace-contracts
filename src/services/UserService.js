@@ -39,7 +39,6 @@ const UserService = {
     try {
       // Find the user in the database based on the provided username
       const user = await User.findOne({ username });
-
       if (!user) {
         return { success: false, message: "Invalid username or password" };
       }
