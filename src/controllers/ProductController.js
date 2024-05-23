@@ -5,7 +5,7 @@ const ProductController = {
     try {
       const { uuid, productImage, name, user } = req.body;
 
-      const result = await ProductService.listItem(uuid, user.uuid, productImage, name);
+      const result = await ProductService.listProduct(uuid, sellerUuid = user.uuid, productImage, name);
 
       if (result.success) {
         res.status(201).json({ message: "list item successfully" });
@@ -15,7 +15,7 @@ const ProductController = {
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while list item." });
+        .json({ error: "An error occurred while list item." + error });
     }
   }
 };
