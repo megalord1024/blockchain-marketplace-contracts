@@ -6,5 +6,6 @@ const productRouter = express.Router();
 
 // POST /products/listItem - list item
 productRouter.post('/listItem', authenticateToken, ProductController.listItem);
+productRouter.get('/findAll', ProductController.findAllProducts);
 
 module.exports = productRouter;

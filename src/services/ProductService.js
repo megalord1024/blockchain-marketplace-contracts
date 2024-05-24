@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const Product = require("../models/Product.js");
-const User = require("../models/User.js")
+const User = require("../models/User.js");
 
 const ProductService = {
   listProduct: async (uuid, sellerUuid, productImage, name) => {
@@ -9,7 +9,12 @@ const ProductService = {
       console.log(sellerUuid);
       const user = await User.findOne({ uuid: sellerUuid });
       // Create a new product
-      const product = new Product({ uuid, sellerId: user._id, productImage, name });
+      const product = new Product({
+        uuid,
+        sellerId: user._id,
+        productImage,
+        name,
+      });
       await product.save();
 
       return { success: true };
@@ -19,6 +24,17 @@ const ProductService = {
         success: false,
         message: message,
       };
+    }
+  },
+  findAllProducts: async () => {
+    try {
+      const products = await Product.find({});
+      return products;
+      // Process the retrieved products
+    } catch (err) {
+      console.error(err);
+      // Handle the error
+      return [];
     }
   },
 };

@@ -17,6 +17,17 @@ const ProductController = {
         .status(500)
         .json({ error: "An error occurred while list item." + error });
     }
+  },
+  findAllProducts: async (req, res) => {
+    try{
+      const products = await ProductService.findAllProducts();
+      res.status(201).json(products);
+    }
+    catch(error){
+      res
+      .status(500)
+      .json({ error: "An error occurred while get item." + error });
+    }
   }
 };
 

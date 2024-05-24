@@ -6,12 +6,14 @@ contract TradeRecord {
     struct Transaction {
         uint256 timestamp;
         uint32 quantity;
-        uint32 price;
+        uint256 price;
         address buyer;
         address seller;
         string buyerUuid;
         string sellerUuid;
         uint256 recordUuid;
+        string name;
+        string metaUuid;
     }
 
     mapping(uint256 => Transaction) public transactions;
@@ -21,8 +23,6 @@ contract TradeRecord {
 
     RandomNumberGenerator randomGenerator;
 
-    event TradeRecordAdded(uint256 tradeRecordId, uint256 timestamp, uint32 quantity, uint32 price, address buyer, address seller, string buyerUuid, string sellerUuid, uint256 recordUuid);
-
     constructor(address _randomNumberContractAddress) {
         randomGenerator = RandomNumberGenerator(_randomNumberContractAddress);
     }
@@ -30,11 +30,13 @@ contract TradeRecord {
     function addTradeRecord(
         uint256 _timestamp,
         uint32 _quantity,
-        uint32 _price,
+        uint256 _price,
         address _buyer,
         address _seller,
         string memory _buyerUuid,
-        string memory _sellerUuid
+        string memory _sellerUuid,
+        string memory _metaUuid,
+        string memory _productName
     ) external {
         uint256 uuid = randomGenerator.generateNumber(_timestamp + transactionIndex);
 
@@ -46,33 +48,39 @@ contract TradeRecord {
             _seller,
             _buyerUuid,
             _sellerUuid,
-            uuid
+            uuid,
+            _productName,
+            _metaUuid
         );
         transactions[transactionIndex] = newTransactionRecord;
 
         buyerToTransactionIndexes[_buyer].push(transactionIndex);
         sellerToTransactionIndexes[_seller].push(transactionIndex);
 
-        emit TradeRecordAdded(
-            transactionIndex,
-            _timestamp,
-            _quantity,
-            _price,
-            _buyer,
-            _seller,
-            _buyerUuid,
-            _sellerUuid,
-            uuid
-        );
-
         transactionIndex++;
     }
 
-    function getTransactionIndexesByBuyer(address _buyer) external view returns (uint256[] memory) {
-        return buyerToTransactionIndexes[_buyer];
+    function getTransactionByBuyer(address _buyer) external view returns (Transaction[] memory) {
+        uint256[] memory indexes = buyerToTransactionIndexes[_buyer];
+        Transaction[] memory buyerTransactions = new Transaction[](indexes.length);
+    
+        for (uint256 i = 0; i < indexes.length; i++) {
+            uint256 index = indexes[i];
+            buyerTransactions[i] = transactions[index];
+        }
+
+        return buyerTransactions;
     }
 
-    function getTransactionIndexesBySeller(address _seller) external view returns (uint256[] memory) {
-        return sellerToTransactionIndexes[_seller];
+    function getTransactionBySeller(address _seller) external view returns (Transaction[] memory) {
+        uint256[] memory indexes = sellerToTransactionIndexes[_seller];
+        Transaction[] memory sellerTransactions = new Transaction[](indexes.length);
+    
+        for (uint256 i = 0; i < indexes.length; i++) {
+            uint256 index = indexes[i];
+            sellerTransactions[i] = transactions[index];
+        }
+
+        return sellerTransactions;
     }
 }
