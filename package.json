@@ -7,7 +7,8 @@
     "test": "npm test",
     "contract-deploy": "npx hardhat run --network sepolia scripts/deploy.js",
     "contract-test": "npx hardhat test",
-    "contract-get-products": "node scripts/getProductMapping.js"
+    "contract-get-products": "node scripts/getProductMapping.js",
+    "contract-get-balance": "node scripts/getContractBalance.js"
   },
   "keywords": [
     "blockchain",

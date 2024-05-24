@@ -6,7 +6,7 @@ contract TradeRecord {
     struct Transaction {
         uint256 timestamp;
         uint32 quantity;
-        uint32 price;
+        uint256 price;
         address buyer;
         address seller;
         string buyerUuid;
@@ -21,8 +21,6 @@ contract TradeRecord {
 
     RandomNumberGenerator randomGenerator;
 
-    event TradeRecordAdded(uint256 tradeRecordId, uint256 timestamp, uint32 quantity, uint32 price, address buyer, address seller, string buyerUuid, string sellerUuid, uint256 recordUuid);
-
     constructor(address _randomNumberContractAddress) {
         randomGenerator = RandomNumberGenerator(_randomNumberContractAddress);
     }
@@ -30,7 +28,7 @@ contract TradeRecord {
     function addTradeRecord(
         uint256 _timestamp,
         uint32 _quantity,
-        uint32 _price,
+        uint256 _price,
         address _buyer,
         address _seller,
         string memory _buyerUuid,
@@ -52,18 +50,6 @@ contract TradeRecord {
 
         buyerToTransactionIndexes[_buyer].push(transactionIndex);
         sellerToTransactionIndexes[_seller].push(transactionIndex);
-
-        emit TradeRecordAdded(
-            transactionIndex,
-            _timestamp,
-            _quantity,
-            _price,
-            _buyer,
-            _seller,
-            _buyerUuid,
-            _sellerUuid,
-            uuid
-        );
 
         transactionIndex++;
     }
