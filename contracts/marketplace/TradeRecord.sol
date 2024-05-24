@@ -12,6 +12,8 @@ contract TradeRecord {
         string buyerUuid;
         string sellerUuid;
         uint256 recordUuid;
+        string name;
+        string metaUuid;
     }
 
     mapping(uint256 => Transaction) public transactions;
@@ -32,7 +34,9 @@ contract TradeRecord {
         address _buyer,
         address _seller,
         string memory _buyerUuid,
-        string memory _sellerUuid
+        string memory _sellerUuid,
+        string memory _metaUuid,
+        string memory _productName
     ) external {
         uint256 uuid = randomGenerator.generateNumber(_timestamp + transactionIndex);
 
@@ -44,7 +48,9 @@ contract TradeRecord {
             _seller,
             _buyerUuid,
             _sellerUuid,
-            uuid
+            uuid,
+            _productName,
+            _metaUuid
         );
         transactions[transactionIndex] = newTransactionRecord;
 
@@ -54,11 +60,27 @@ contract TradeRecord {
         transactionIndex++;
     }
 
-    function getTransactionIndexesByBuyer(address _buyer) external view returns (uint256[] memory) {
-        return buyerToTransactionIndexes[_buyer];
+    function getTransactionByBuyer(address _buyer) external view returns (Transaction[] memory) {
+        uint256[] memory indexes = buyerToTransactionIndexes[_buyer];
+        Transaction[] memory buyerTransactions = new Transaction[](indexes.length);
+    
+        for (uint256 i = 0; i < indexes.length; i++) {
+            uint256 index = indexes[i];
+            buyerTransactions[i] = transactions[index];
+        }
+
+        return buyerTransactions;
     }
 
-    function getTransactionIndexesBySeller(address _seller) external view returns (uint256[] memory) {
-        return sellerToTransactionIndexes[_seller];
+    function getTransactionBySeller(address _seller) external view returns (Transaction[] memory) {
+        uint256[] memory indexes = sellerToTransactionIndexes[_seller];
+        Transaction[] memory sellerTransactions = new Transaction[](indexes.length);
+    
+        for (uint256 i = 0; i < indexes.length; i++) {
+            uint256 index = indexes[i];
+            sellerTransactions[i] = transactions[index];
+        }
+
+        return sellerTransactions;
     }
 }

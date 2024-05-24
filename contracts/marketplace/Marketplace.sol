@@ -74,7 +74,9 @@ contract Marketplace {
             msg.sender,
             product.seller,
             _buyerUuid,
-            product.sellerUuid
+            product.sellerUuid,
+            _metaUuid,
+            product.name
         );
     }
 
