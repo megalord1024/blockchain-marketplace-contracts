@@ -30,6 +30,8 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 ```
 
+you can also configure your own contract address in the config.js.
+
 4. Compile the contract and deploy to sepolia testnet:
 ```shell
 npx hardhat Compile
