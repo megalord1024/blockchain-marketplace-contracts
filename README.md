@@ -8,8 +8,6 @@ This project demonstrates a basic Hardhat use case with blockchain marketplace. 
 
 Here is the frontend for this project. It establish the user metamask connection, marketplace interaction, and the contract calling.
 
-[blockchain-marketplace-frontend](https://github.com/PeterTikCheung/blockchain-marketplace-frontend)
-
 
 ## Setup
 
